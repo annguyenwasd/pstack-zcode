@@ -12,7 +12,7 @@ Upstream: [michael-denyer/pstack-claude](https://github.com/michael-denyer/pstac
 | Slash commands | skills double as commands (no separate `commands/`) | 67 / 67 invocable as `/pstack:<name>` (bare `/name` resolves too) | — | **100%** |
 | Agents | 4 subagent definitions | 4 / 4 (**100%**) | 1 (`poteto-agent.md`: plugin-cache path) | **100%** |
 | Hooks (zcode runtime) | 1 SessionStart hook (`hooks.json` + `session-start.sh`) | 1 / 1 (**100%**), verified live | both rewritten for zcode | **100%** |
-| Hook files for other runtimes | 10 files (Codex / Copilot / Muse / PowerShell) | 0 — not applicable | dropped, zcode-only | N/A |
+| Hook files for other runtimes | 10 runtime-specific files (Codex / Copilot / Muse / PowerShell) | 0 — not applicable; dropped, zcode-only. The 3 shared `pre-tool-use` support files ship unwired, exactly as upstream ships them | N/A |
 | Models config (`models.json`) | 1 | 1 / 1 (**100%**) | tiers → `GLM-5.3` / `GLM-5.3-Flash`; `codex` / `pi` / `muse` blocks removed | **100%** |
 | Bundled scripts (`skills/*/scripts/`, 453 files) | all | all (**100%**) | 2 (`worktree-audit.mjs`, `sheet.awk`) + 1 renamed (`zcode-project-dir.mjs`) | **100%** |
 
@@ -23,7 +23,7 @@ Upstream: [michael-denyer/pstack-claude](https://github.com/michael-denyer/pstac
 | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | `.zcode-plugin/plugin.json`, `.zcode-plugin/marketplace.json` (zcode's preferred manifest probe path) |
 | `session-start.sh claude`, plain-text stdout context | `session-start.sh zcode`, strict-schema JSON `additionalContext` (zcode parses hook stdout as JSON) |
 | Model sheet at `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/pstack-models.md` | `~/.zcode/rules/pstack-models.md`, referenced from `~/.zcode/AGENTS.md` |
-| Transcripts at `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<encoded-cwd>/` | `~/.zcode/cli/rollout/model-io-sess_<session-id>.jsonl`; helper renamed `zcode-project-dir.mjs` |
+| Transcripts at `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<encoded-cwd>/` | zcode's flat `$HOME/.zcode/cli/rollout/` store; helper renamed `zcode-project-dir.mjs` with `--session-file` |
 | `plugin-dev:skill-development` authoring skill | `skill-creator` (ships with zcode's bundled official plugins) |
 | `CLAUDE.md` instructions file | `AGENTS.md` |
 | Model tiers `opus` / `fable` / `sonnet` / `haiku` | `GLM-5.3` / `GLM-5.3-Flash` (override sheet adapts per user) |
@@ -59,8 +59,9 @@ to print the full 784-row table (source: the upstream clone passed as the argume
 ## Verified live
 
 - `session-start.sh zcode`: no sheet → JSON `additionalContext` with the mandate and a run-`setup-pstack`-first note; valid sheet → role lines injected from checked values; `session hook: off` → silent, exit 0.
-- `zcode-project-dir.mjs`: prints `~/.zcode/cli/rollout` and this session's transcript file when the session id is known.
-- `sheet.awk`: accepts the real zcode sheet (`account:.../GLM-5.3` IDs) after the charset widening.
+- `zcode-project-dir.mjs`: prints `~/.zcode/cli/rollout` by default and the session's own `model-io` file with `--session-file` (env session id, newest-file fallback).
+- `sheet.awk`: accepts the real zcode sheet (`account:.../GLM-5.3` IDs) after the charset widening; adversarial sheets (quotes, backslashes, UTF-8, CRLF, UTF-16LE) stay rejected.
+- `find-transcript.mjs`: refuses zcode rollout files with the pointing error, keeping the upstream/Pi/Copilot readers intact; `worktree-audit.mjs`, which shares only the directory walker, still byte-scans real rollout files.
 - `node tools/apply-zcode-port.mjs check`: denylist clean, 194 files.
 - `node tools/coverage.mjs`: 784 upstream files, 0 missing.
 
@@ -68,6 +69,7 @@ Agents were additionally confirmed against zcode's live plugin discovery: the up
 
 ## Known limits
 
-- The upstream multi-runtime story (Codex, Pi, Copilot, Muse) is out of scope by design; the four `*-tools.md` mapping references ship as documentation of upstream's architecture but are never routed to on zcode.
-- zcode exposes no bundled `run` skill, so poteto-mode's runtime-verification path resolves through the driver-skill policy in its Non-negotiables.
+- The upstream multi-runtime story (Codex, Pi, Copilot, Muse) is out of scope by design. Upstream architecture docs that describe it ship dormant: the four `poteto-mode/references/*-tools.md` mappings (routing conditions exist for other runtimes), the other-runtime rows of setup-pstack's runtime table, and `setup-pstack/copilot.md`. zcode users never route into them.
+- zcode exposes no bundled `run` or `verify` skill, so poteto-mode's runtime-verification path resolves through the driver-skill policy in its Non-negotiables and project-local `verify` skills.
+- **Transcript capability regression, stated honestly:** Claude Code records each chat message, so upstream's `find-transcript.mjs` locates a session by a fragment of its opening prompt. zcode's rollout files record no user prompts (their windows hold only assistant, tool, and system records), so no fragment match is possible. The port makes that explicit: `find-transcript.mjs` refuses zcode rollout files with a pointing error, `zcode-project-dir.mjs --session-file` resolves the current session's file, and prior sessions open individually from `ls -t`. `reflect`, `recall`, and session pickup work from the session file or a digest, as upstream's own fallback prescribes.
 - zcode reads `AGENTS.md` rather than `CLAUDE.md`; the sheet include is a prose reference line (as upstream's Codex row does), because zcode's `@`-include support for AGENTS.md is unverified — the SessionStart hook injects the role lines regardless, so setup works either way.

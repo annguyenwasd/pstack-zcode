@@ -21,7 +21,7 @@ pstack is Lauren Tan's ([poteto](https://github.com/poteto)) opinionated skill s
 
 - Plugin manifest and marketplace live at `.zcode-plugin/` (zcode's preferred probe path).
 - The SessionStart hook runs `session-start.sh zcode` and emits strict-schema JSON `additionalContext`; the model sheet lives at `~/.zcode/rules/pstack-models.md` and is referenced from `~/.zcode/AGENTS.md`.
-- Transcript helpers read zcode's session store at `~/.zcode/cli/rollout/` (`skills/reflect/scripts/zcode-project-dir.mjs`).
+- Transcript helpers read zcode's flat session store at `~/.zcode/cli/rollout/` (`skills/reflect/scripts/zcode-project-dir.mjs`, `--session-file` for this session's file). zcode's rollout records no user prompts, so upstream's opening-prompt transcript finder refuses those files and says so — see the known-limits section of [COMPATIBILITY.md](COMPATIBILITY.md).
 - Model tiers default to `GLM-5.3` / `GLM-5.3-Flash` in [`plugins/pstack/models.json`](plugins/pstack/models.json); `/pstack:setup-pstack` adapts them to the models you actually have.
 - Skill text speaks zcode tool names (`Agent`, `Skill`, `AskUserQuestion`, `TodoWrite`), zcode paths, and zcode models throughout. The rewrite rules live in [`tools/zcode-substitutions.json`](tools/zcode-substitutions.json); run `node tools/apply-zcode-port.mjs check` to verify the tree stays clean.
 
