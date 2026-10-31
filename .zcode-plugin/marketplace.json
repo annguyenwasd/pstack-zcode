@@ -1,0 +1,16 @@
+{
+  "name": "pstack-zcode",
+  "owner": {
+    "name": "annguyenwasd",
+    "url": "https://github.com/annguyenwasd"
+  },
+  "description": "zcode port of poteto's pstack, via Michael Denyer's Claude Code port. Rigorous agent workflows with Claude Code primitives translated to zcode equivalents.",
+  "plugins": [
+    {
+      "name": "pstack",
+      "source": "./plugins/pstack",
+      "description": "If you want to go fast, go deep first. pstack helps you write less, but higher quality code. Rigorous agent workflows you can parallelize with confidence. Original pstack by Lauren Tan (poteto).",
+      "version": "0.9.114"
+    }
+  ]
+}

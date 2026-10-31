@@ -1,0 +1,230 @@
+{
+  "comment": "Claude Code -> zcode substitutions for the pstack port. Applied in order to plugins/pstack/skills/** and docs/reference.md by tools/apply-zcode-port.mjs. Order matters: specific phrases before generic paths, generic paths before bare renames.",
+  "substitutions": [
+    {
+      "pattern": ".claude-plugin/plugin.json",
+      "replacement": ".zcode-plugin/plugin.json"
+    },
+    {
+      "pattern": ".claude-plugin",
+      "replacement": ".zcode-plugin"
+    },
+    {
+      "pattern": "/loop is a Claude Code bundled skill",
+      "replacement": "/loop maps to the **loop-me** skill on zcode"
+    },
+    {
+      "pattern": "Claude Code's per-project transcripts directory at `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<encoded-cwd>/`",
+      "replacement": "zcode's session transcripts directory at `$HOME/.zcode/cli/rollout/` (one `model-io-sess_<session-id>.jsonl` per session)"
+    },
+    {
+      "pattern": "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<encoded-cwd>/<uuid>.jsonl",
+      "replacement": "$HOME/.zcode/cli/rollout/model-io-sess_<session-id>.jsonl"
+    },
+    {
+      "pattern": "${CLAUDE_CODE_PLUGIN_CACHE_DIR:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}/plugins}/",
+      "replacement": "$HOME/.zcode/cli/plugins/cache/"
+    },
+    {
+      "pattern": "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/",
+      "replacement": "$HOME/.zcode/cli/rollout/"
+    },
+    {
+      "pattern": "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/",
+      "replacement": "$HOME/.zcode/skills/"
+    },
+    {
+      "pattern": "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/pstack-models.md",
+      "replacement": "$HOME/.zcode/rules/pstack-models.md"
+    },
+    {
+      "pattern": "${CLAUDE_CONFIG_DIR:-$HOME/.claude}",
+      "replacement": "$HOME/.zcode"
+    },
+    {
+      "pattern": "$HOME/.claude/pstack-models.md",
+      "replacement": "$HOME/.zcode/rules/pstack-models.md"
+    },
+    {
+      "pattern": "~/.claude/orchestrate/",
+      "replacement": "~/.zcode/orchestrate/"
+    },
+    {
+      "pattern": "~/.claude/",
+      "replacement": "~/.zcode/"
+    },
+    {
+      "pattern": ".claude/skills/",
+      "replacement": ".zcode/skills/"
+    },
+    {
+      "pattern": ".claude/worktrees/",
+      "replacement": ".zcode/worktrees/"
+    },
+    {
+      "pattern": ".claude/",
+      "replacement": ".zcode/"
+    },
+    {
+      "pattern": "claude-project-dir.mjs",
+      "replacement": "zcode-project-dir.mjs"
+    },
+    {
+      "pattern": "plugin-dev:skill-development",
+      "replacement": "skill-creator"
+    },
+    {
+      "pattern": ", or run `claude mcp list`",
+      "replacement": ""
+    },
+    {
+      "pattern": "or run `claude mcp list`",
+      "replacement": ""
+    },
+    {
+      "pattern": "On Claude Code these are `TaskCreate` and `TaskUpdate`, or `TodoWrite` when configured",
+      "replacement": "In zcode this is `TodoWrite`"
+    },
+    {
+      "pattern": "`run` ships with Claude Code and the model can invoke it for CLIs, TUIs, servers, and browser or Electron apps",
+      "replacement": "zcode has no bundled `run` skill, so runtime verification goes through the driver skill the Non-negotiables resolve"
+    },
+    {
+      "pattern": "on Claude Code",
+      "replacement": "in zcode"
+    },
+    {
+      "pattern": "On Claude Code",
+      "replacement": "In zcode"
+    },
+    {
+      "pattern": "such as Opus, Fable, or Sonnet",
+      "replacement": "such as GLM-5.3 or GLM-5.3-Flash"
+    },
+    {
+      "pattern": "Claude model names",
+      "replacement": "zcode model names"
+    },
+    {
+      "pattern": "(Claude's",
+      "replacement": "(zcode's"
+    },
+    {
+      "pattern": "Claude Code",
+      "replacement": "zcode"
+    },
+    {
+      "pattern": "`opus`",
+      "replacement": "`GLM-5.3`"
+    },
+    {
+      "pattern": "`fable`",
+      "replacement": "`GLM-5.3`"
+    },
+    {
+      "pattern": "`sonnet`",
+      "replacement": "`GLM-5.3`"
+    },
+    {
+      "pattern": "`haiku`",
+      "replacement": "`GLM-5.3-Flash`"
+    },
+    {
+      "pattern": "CLAUDE.md",
+      "replacement": "AGENTS.md"
+    },
+    {
+      "pattern": "Availability depends on the model; `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` enables them through the environment or a project's `.zcode/settings.local.json` `env` block. See the [task-tool documentation](https://code.claude.com/docs/en/tools-reference#task-tool-availability).",
+      "replacement": "Availability depends on the zcode release; check the session's tool list."
+    },
+    {
+      "pattern": " ([zcode 2.1.200 or later](https://code.claude.com/docs/en/skills#run-and-verify-your-app))",
+      "replacement": ""
+    },
+    {
+      "pattern": "at least as strong as gpt-5.4-mini or a Sonnet-class Claude model. On a Haiku-class model",
+      "replacement": "at least mid-tier. On a small fast model"
+    },
+    {
+      "pattern": "names a Claude tool, a driver or bundled skill, or a Claude model",
+      "replacement": "names a zcode tool, a driver or bundled skill, or a zcode model"
+    },
+    {
+      "pattern": "pstack / Claude action",
+      "replacement": "pstack / zcode action"
+    },
+    {
+      "pattern": "Claude-specific defaults",
+      "replacement": "zcode-specific defaults"
+    },
+    {
+      "pattern": "Skills name Claude defaults",
+      "replacement": "Skills name zcode defaults"
+    },
+    {
+      "pattern": "the strongest Claude model",
+      "replacement": "the strongest zcode model"
+    },
+    {
+      "pattern": "the Claude worker model",
+      "replacement": "the zcode worker model"
+    },
+    {
+      "pattern": " or `claude mcp list`",
+      "replacement": ""
+    },
+    {
+      "pattern": "tools named after the Claude ones",
+      "replacement": "tools named after the zcode ones"
+    },
+    {
+      "regex": "\\bClaude\\b",
+      "replacement": "zcode"
+    }
+  ],
+  "denylist": [
+    {
+      "regex": "claude-project-dir",
+      "hint": "transcript helper must be named zcode-project-dir.mjs"
+    },
+    {
+      "regex": "\\.claude",
+      "hint": "Claude path survived; map it to the zcode equivalent"
+    },
+    {
+      "regex": "~/\\.claude|\\$\\{CLAUDE_CONFIG_DIR|\\$CLAUDE_CONFIG_DIR",
+      "hint": "Claude config dir survived; use $HOME/.zcode"
+    },
+    {
+      "regex": "CLAUDE_CODE_[A-Z_]+",
+      "hint": "Claude Code env var; zcode has no equivalent, rewrite the sentence"
+    },
+    {
+      "regex": "claude mcp",
+      "hint": "no claude CLI on zcode; MCP servers appear as mcp__<server>__<name> tools"
+    },
+    {
+      "regex": "plugin-dev",
+      "hint": "zcode's authoring skill is skill-creator"
+    },
+    {
+      "regex": "CLAUDE\\.md",
+      "hint": "zcode reads AGENTS.md"
+    },
+    {
+      "regex": "`(?:opus|fable|sonnet|haiku)`",
+      "hint": "Claude tier name; use GLM-5.3 or GLM-5.3-Flash"
+    },
+    {
+      "regex": "\\bOpus\\b|\\bFable\\b|\\bSonnet\\b|\\bHaiku\\b",
+      "hint": "Claude model name in prose; use the GLM names"
+    },
+    {
+      "regex": "Claude (?:Code|model|agent)",
+      "hint": "Claude phrase survived; say zcode",
+      "allowFiles": [
+        "docs/reference.md"
+      ]
+    }
+  ]
+}

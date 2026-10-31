@@ -1,0 +1,27 @@
+{
+  "name": "pstack",
+  "displayName": "pstack (zcode port)",
+  "version": "0.9.114",
+  "description": "If you want to go fast, go deep first. pstack helps you write less, but higher quality code. Rigorous agent workflows you can parallelize with confidence. Ported to zcode from Michael Denyer's Claude Code port of Lauren Tan's (poteto) pstack.",
+  "author": {
+    "name": "Michael Denyer",
+    "url": "https://github.com/michael-denyer"
+  },
+  "homepage": "https://github.com/annguyenwasd/pstack-zcode",
+  "repository": "https://github.com/annguyenwasd/pstack-zcode",
+  "license": "MIT",
+  "keywords": [
+    "pstack",
+    "poteto-mode",
+    "workflow",
+    "principles",
+    "agent-style",
+    "subagents",
+    "unslop",
+    "zcode",
+    "skills",
+    "tdd",
+    "code-review",
+    "parallel-agents"
+  ]
+}
