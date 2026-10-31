@@ -131,9 +131,11 @@ async function claudeOpening(records) {
   return null;
 }
 
-// A zcode model-io rollout records no user-role message: its request.messages
-// window holds only assistant, tool, and system entries, so the opening prompt
-// the finder matches on does not exist in the file. Open the session file
+// A top-level zcode model-io rollout records no user-role message: its
+// request.messages window holds only assistant, tool, and system entries, so
+// the opening prompt the finder matches on does not exist in the file.
+// (Subagent model-io files can carry user-role entries, but they name a task
+// prompt, not the session's opening one, so they are refused too.) Open the session file
 // directly instead — zcode-project-dir.mjs --session-file prints it — and pass
 // a digest where a prior session's opening prompt is needed.
 const isZcodeRecord = (record) => Array.isArray(record?.request?.messages);
