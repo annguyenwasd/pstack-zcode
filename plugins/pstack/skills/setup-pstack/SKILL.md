@@ -31,7 +31,7 @@ The Codex home directory is `$CODEX_HOME` when that variable is set and `~/.code
 
 ### 1. Detect available models
 
-Enumerate the model names the `Agent` tool's `model` parameter accepts in this session. That is the dependable source. In zcode they are the family names listed in [Models](#models) below, each running that family's current model, and a full model ID is rejected. The default panel is listed there too. The panel is chosen for cross-family diversity. Ask the user to confirm or paste any additional slugs they want available. Never write a real slug you have not confirmed is available. The aliases `inherit-parent` and `auto` are always valid even though they are not detected slugs. Both mean the role runs on the parent session's model, which the `Agent` call expresses by omitting `model`.
+Enumerate the model names the `Agent` tool's `model` parameter accepts in this session. That is the dependable source. In zcode they are the family names listed in [Models](#models) below; a provider-prefixed full model ID, such as `account:your-plan/GLM-5.3`, is accepted too. The default panel is listed there too. Pair two distinct models in the panel when the user has them. Ask the user to confirm or paste any additional slugs they want available. Never write a real slug you have not confirmed is available. The aliases `inherit-parent` and `auto` are always valid even though they are not detected slugs. Both mean the role runs on the parent session's model, which the `Agent` call expresses by omitting `model`.
 
 ### 2. Load current state
 
@@ -62,23 +62,23 @@ Write the current runtime's sheet with the shape below. Overwrite the whole file
 
 Per-role model overrides for pstack skills. Each pstack SKILL.md names its defaults in a Models section; the values here override those defaults. Delete a line to fall back to the skill default. A value of `inherit-parent` or `auto` runs that role on the parent session's model (the `Agent` call omits `model`); an alias entry in a panel list still counts toward that panel's fan-out. A model may carry a reasoning effort, as in `GLM-5.3 @xhigh` (levels: low, medium, high, xhigh, max); the role's subagent then runs at that level, each entry of a panel list on its own. `default effort` sets the level for a value without one; `session` uses the runtime's platform mapping to start from the parent session's effort. On Codex this requires active-turn metadata or an explicit effort choice. `session hook: off` stops the zcode, Codex, or Muse SessionStart hook, or the pstack Pi extension, from injecting the poteto-mode mandate; any other value, or no line, leaves it on.
 
-feature, refactoring: sonnet
-bug-fix: opus
-perf-issue: opus
-hillclimb: opus
-judgment and prose: opus
-strongest judgment: fable
-how explorer: opus
-how explainer: opus
-why investigators: opus
-why synthesizer: opus
-reflect tooling: opus
-reflect judgment, divergent, synthesizer: opus
-arena runners: opus, fable, sonnet, haiku
-arena cross-judge pool: opus, fable, sonnet, haiku
-swarm workers: opus
-architect runners: opus, fable, sonnet, haiku
-interrogate reviewers: opus, fable, sonnet, haiku
+feature, refactoring: GLM-5.3-Flash
+bug-fix: GLM-5.3
+perf-issue: GLM-5.3
+hillclimb: GLM-5.3
+judgment and prose: GLM-5.3
+strongest judgment: GLM-5.3
+how explorer: GLM-5.3-Flash
+how explainer: GLM-5.3
+why investigators: GLM-5.3-Flash
+why synthesizer: GLM-5.3
+reflect tooling: GLM-5.3-Flash
+reflect judgment, divergent, synthesizer: GLM-5.3
+arena runners: GLM-5.3, GLM-5.3-Flash
+arena cross-judge pool: GLM-5.3
+swarm workers: GLM-5.3-Flash
+architect runners: GLM-5.3, GLM-5.3-Flash
+interrogate reviewers: GLM-5.3, GLM-5.3-Flash
 
 default effort: session
 session hook: on
@@ -124,7 +124,7 @@ The role lines are the same everywhere. What differs is the sheet path, how the 
 Stamped from `plugins/pstack/models.json` (edit there).
 
 - Available zcode models: `GLM-5.3`, `GLM-5.3-Flash`
-- Default panel: `GLM-5.3`, `GLM-5.3`, `GLM-5.3`, `GLM-5.3-Flash`
+- Default panel: `GLM-5.3`, `GLM-5.3-Flash`
 - Reasoning effort levels: `low`, `medium`, `high`, `xhigh`, `max`
 - Default reasoning effort: `session`
 - Single-role default: `GLM-5.3`

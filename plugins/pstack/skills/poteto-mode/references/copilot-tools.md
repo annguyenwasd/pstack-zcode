@@ -85,7 +85,7 @@ The Copilot app loads the same plugin as the CLI and adds session-level tools. U
 
 ## Transcripts
 
-zcode keeps one directory per project under `$HOME/.zcode/cli/rollout/<encoded-cwd>/`. Copilot keeps one directory per session under `${COPILOT_HOME:-~/.copilot}/session-state/<session-id>/`, for every project together:
+zcode keeps every session in one flat directory, `$HOME/.zcode/cli/rollout/` (one `model-io-sess_<session-id>.jsonl` per session, user prompts not recorded). Copilot keeps one directory per session under `${COPILOT_HOME:-~/.copilot}/session-state/<session-id>/`, for every project together:
 
 - `events.jsonl` is the transcript. The first record is `session.start` with `data.context.cwd`; user turns are `{"type":"user.message","data":{"content":...}}`.
 - `workspace.yaml` names the session's `cwd`. Scope every transcript search to the current workspace: keep only session directories whose `cwd` is the workspace path (or a worktree of it), then read their `events.jsonl`. Never read other projects' sessions.

@@ -225,6 +225,30 @@
       "allowFiles": [
         "docs/reference.md"
       ]
+    },
+    {
+      "regex": "encoded-cwd",
+      "hint": "zcode's rollout directory is flat; there is no encoded-cwd"
+    },
+    {
+      "regex": "shell-snapshots",
+      "hint": "zcode has no shell-snapshots directory"
+    },
+    {
+      "regex": "chat UUID",
+      "hint": "zcode sessions have sess_ ids, not chat UUIDs"
+    },
+    {
+      "regex": "`?(?:opus|sonnet|haiku|fable) @",
+      "hint": "upstream model slug with an effort suffix; use GLM-5.3 @level"
+    },
+    {
+      "regex": "(?:zcode's|the zcode) `loop` skill",
+      "hint": "zcode has no bundled loop skill; name the loop-me skill"
+    },
+    {
+      "regex": "bundled `/verify`",
+      "hint": "zcode has no bundled /verify; rewrite the premise"
     }
   ]
 }

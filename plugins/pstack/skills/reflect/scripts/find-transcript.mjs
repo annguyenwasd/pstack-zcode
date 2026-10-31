@@ -3,18 +3,19 @@
 //
 //   node find-transcript.mjs <transcripts-dir> <opening-prompt-fragment> [workspace]
 //
-// Prints the newest matching path, or exits 1 with "no transcript". Covers
-// zcode's three layouts under one per-project directory (flat
+// Prints the newest matching path, or exits 1 with "no transcript". Covers the
+// upstream zcode layouts under one per-project directory (flat
 // <id>.jsonl, nested <id>/<id>.jsonl, subagent <id>/subagents/<child>.jsonl)
 // Pi's <iso>_<id>.jsonl under its per-cwd sessions directory, and GitHub
 // Copilot's <id>/events.jsonl under its session-state directory, told apart by
 // Pi's session header line and Copilot's session.start event. Each candidate is
-// streamed line by line; a zcode or Copilot transcript is abandoned at its
+// streamed line by line; a Copilot transcript is abandoned at its
 // first typed user record. Copilot searches compare the session header's cwd
 // with the workspace (the current directory by default) before reading user
 // messages. A Pi session is read to its last entry to find
 // the active branch. A Codex rollout is refused by name rather than read as an
-// empty zcode transcript.
+// empty zcode transcript, and so is a zcode model-io rollout, which records
+// no opening prompt at all.
 import { createReadStream, readdirSync, realpathSync, statSync } from "node:fs";
 import { isAbsolute, join } from "node:path";
 import process from "node:process";
@@ -130,6 +131,19 @@ async function claudeOpening(records) {
   return null;
 }
 
+// A zcode model-io rollout records no user-role message: its request.messages
+// window holds only assistant, tool, and system entries, so the opening prompt
+// the finder matches on does not exist in the file. Open the session file
+// directly instead — zcode-project-dir.mjs --session-file prints it — and pass
+// a digest where a prior session's opening prompt is needed.
+const isZcodeRecord = (record) => Array.isArray(record?.request?.messages);
+
+const refuseZcode = (head, rest, path) => {
+  throw new Error(
+    `${path} is a zcode model-io rollout, which records no opening prompt; open the session file directly (zcode-project-dir.mjs --session-file) instead`,
+  );
+};
+
 // Pi branches in place: every entry is appended to one file and linked to its
 // parent by id, and the last entry is the current leaf. The opening prompt is
 // the first user message on the path from that leaf to its root, which may not
@@ -152,14 +166,16 @@ async function piOpening(records) {
   return prompt;
 }
 
-// Readers by opening record. zcode writes no header, so its row is last
-// and takes every file the others do not claim.
+// Readers by opening record. zcode's model-io record has no header line, so
+// its row sits before the catch-all and claims only files whose first record
+// carries request.messages; the catch-all keeps the upstream zcode layouts.
 const READERS = [
   [isPiHeader, (head, rest) => piOpening(rest)],
   [isCopilotHeader, (head, rest, path, workspace) => copilotOpening(head, rest, workspace)],
   [isCodexHeader, (head, rest, path) => {
     throw new Error(`${path} is a Codex rollout, which find-transcript does not read; pass the session digest instead`);
   }],
+  [isZcodeRecord, refuseZcode],
   [() => true, (head, rest) => claudeOpening(prepend(head, rest))],
 ];
 

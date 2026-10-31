@@ -31,7 +31,7 @@ Update mode changes the rest of the flow:
 
 ### 1. Mine their history
 
-Locate the active workspace's transcripts before fanning out. zcode stores them at `$HOME/.zcode/cli/rollout/<encoded-cwd>/*.jsonl`. Run `node <plugin>/skills/reflect/scripts/zcode-project-dir.mjs` to print this session's directory rather than building `<encoded-cwd>` by hand. Use only that path. Don't glob across `$HOME/.zcode/cli/rollout/`. That crosses workspace boundaries and reads private chats from unrelated projects.
+Locate the active workspace's transcripts before fanning out. zcode stores them flat at `$HOME/.zcode/cli/rollout/`, one `model-io-sess_<session-id>.jsonl` per session for every project on the machine. Run `node <plugin>/skills/reflect/scripts/zcode-project-dir.mjs --session-file` to print this session's file. Don't glob across the rollout directory — it mixes every project's private chats; open candidate files individually and stay on the sessions that name this workspace.
 
 Survey recent agent conversations within that scope for recurring patterns. Run multiple parallel subagents across slices of history (e.g. last 2-4 weeks, split into 3 slices so each has enough material). Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill. Each slice mining subagent reads transcripts from the workspace-scoped path the parent provides, looks for the signals below, and returns a short structured list of patterns it saw with evidence pointers. Default signals worth hunting:
 

@@ -27,7 +27,7 @@ pstack is Lauren Tan's ([poteto](https://github.com/poteto)) opinionated skill s
 
 ## Upstream parity
 
-The skill tree is synced against upstream pstack-claude `ab1f702` (plugin version `0.9.114`, skill tree v0.15.35). Upstream's multi-runtime packaging (Codex, Pi, GitHub Copilot, Muse) is intentionally not shipped here — this repository is zcode only; see [COMPATIBILITY.md](COMPATIBILITY.md) for the exact accounting.
+Synced against upstream pstack-claude at `5851c89` (plugin version `0.9.114`; the skill tree itself carries poteto/pstack's pin `ab1f702`, v0.15.35). Upstream's multi-runtime packaging (Codex, Pi, GitHub Copilot, Muse) is intentionally not shipped here — this repository is zcode only; see [COMPATIBILITY.md](COMPATIBILITY.md) for the exact accounting.
 
 ## Data handling
 
